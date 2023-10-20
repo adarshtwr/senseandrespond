@@ -1,23 +1,37 @@
+import { getRanHex } from "../../utils/common";
 import constants from "../constants";
-const initialState = {
+const savedStateFromLocalStorage = localStorage.getItem("reduxState");
+const savedState = savedStateFromLocalStorage
+  ? JSON.parse(savedStateFromLocalStorage)
+  : null;
+
+export const initialState = savedState || {
+  auth: {
+    isAuthenticated: false,
+    user: null,
+  },
   comments: [
-    { id: 1, text: "Top-level comment", parentId: null },
-    { id: 2, text: "First reply to the top-level comment", parentId: 1 },
-    { id: 3, text: "Reply to the first reply", parentId: 2 },
+    { id: getRanHex(6), text: "Top-level comment", parentId: null },
+    {
+      id: getRanHex(6),
+      text: "First reply to the top-level comment",
+      parentId: 1,
+    },
+    { id: getRanHex(6), text: "Reply to the first reply", parentId: 2 },
   ],
 };
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
     case constants.INIT_COMMENTS:
-      return action.payload;
+      return { ...state, comments: { ...action.payload } };
 
     case constants.ADD_COMMENT:
       return {
         ...state,
         comments: [
           ...state.comments,
-          { id: Date.now(), text: action.payload, parentId: null },
+          { id: getRanHex(6), text: action.payload, parentId: null },
         ],
       };
 
@@ -27,11 +41,29 @@ const reducers = (state = initialState, action) => {
         comments: [
           ...state.comments,
           {
-            id: Date.now(),
+            id: getRanHex(6),
             text: action.payload.replyText,
             parentId: action.payload.commentId,
           },
         ],
+      };
+
+    case constants.LOGIN:
+      return {
+        ...state,
+        auth: {
+          isAuthenticated: true,
+          user: action.payload,
+        },
+      };
+
+    case constants.LOGOUT:
+      return {
+        ...state,
+        auth: {
+          isAuthenticated: false,
+          user: null,
+        },
       };
 
     default:

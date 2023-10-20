@@ -14,3 +14,12 @@ export const initComments = (comments) => ({
   type: constants.INIT_COMMENTS,
   payload: comments,
 });
+
+export const login = (user) => ({
+  type: constants.LOGIN,
+  payload: user,
+});
+
+export const logout = () => ({
+  type: constants.LOGOUT,
+});

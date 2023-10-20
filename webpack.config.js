@@ -16,9 +16,10 @@ module.exports = {
     ],
   },
   devServer: {
-    static: path.join(__dirname, "public"), 
+    static: path.join(__dirname, "public"),
     compress: true,
     port: 9000,
+    historyApiFallback: true,
   },
   resolve: {
     extensions: [".js", ".jsx"],

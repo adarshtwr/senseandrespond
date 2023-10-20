@@ -6,9 +6,8 @@ import { addReply } from "../redux/actions";
 function Comment({ comment }) {
   const dispatch = useDispatch();
   const [replyText, setReplyText] = useState("");
-  const replies = useSelector((state) =>
-    state.comments.filter((c) => c.parentId === comment.id)
-  );
+  const comments = useSelector((state) => state.comments);
+  const replies = comments.filter((c) => c.parentId === comment.id);
 
   const handleReply = () => {
     dispatch(addReply(comment.id, replyText));
