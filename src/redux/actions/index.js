@@ -23,3 +23,8 @@ export const login = (user) => ({
 export const logout = () => ({
   type: constants.LOGOUT,
 });
+
+export const goToPage = (pageNumber) => ({
+  type: constants.GO_TO_PAGE,
+  payload: pageNumber,
+});

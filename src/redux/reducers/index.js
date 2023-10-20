@@ -5,21 +5,15 @@ const savedState = savedStateFromLocalStorage
   ? JSON.parse(savedStateFromLocalStorage)
   : null;
 
-export const initialState = savedState || {
+const defaultState = {
   auth: {
     isAuthenticated: false,
     user: null,
   },
-  comments: [
-    { id: getRanHex(6), text: "Top-level comment", parentId: null },
-    {
-      id: getRanHex(6),
-      text: "First reply to the top-level comment",
-      parentId: 1,
-    },
-    { id: getRanHex(6), text: "Reply to the first reply", parentId: 2 },
-  ],
+  comments: [],
+  currentPage: 1,
 };
+export const initialState = savedState || defaultState;
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -57,14 +51,14 @@ const reducers = (state = initialState, action) => {
         },
       };
 
-    case constants.LOGOUT:
+    case constants.GO_TO_PAGE:
       return {
         ...state,
-        auth: {
-          isAuthenticated: false,
-          user: null,
-        },
+        currentPage: action.payload,
       };
+
+    case constants.LOGOUT:
+      return defaultState;
 
     default:
       return state;

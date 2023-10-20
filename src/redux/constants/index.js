@@ -4,4 +4,5 @@ export default {
   INIT_COMMENTS: "INIT_COMMENTS",
   LOGIN: "LOGIN",
   LOGOUT: "LOGOUT",
+  GO_TO_PAGE: "GO_TO_PAGE",
 };

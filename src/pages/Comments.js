@@ -10,13 +10,15 @@ import {
   Container,
   Paper,
   Grid,
+  Pagination,
 } from "@mui/material";
-import { addComment, logout } from "../redux/actions";
+import { addComment, goToPage, logout } from "../redux/actions";
 import Comment from "../components/Comment";
 import { Navigate } from "react-router-dom";
 
 function Comments() {
   const comments = useSelector((state) => state.comments);
+  const currentPage = useSelector((state) => state.currentPage);
   const parentComments = comments.filter((c) => c.parentId === null);
   const auth = useSelector((state) => state.auth);
   const isLoggedIn = auth?.isAuthenticated;
@@ -31,6 +33,18 @@ function Comments() {
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  const onPageChange = (_, value) => {
+    dispatch(goToPage(value));
+  };
+
+  const parentCommentsPerPage = 5;
+  const totalPages = Math.ceil(parentComments.length / parentCommentsPerPage);
+
+  const displayedParentComments = parentComments.slice(
+    (currentPage - 1) * parentCommentsPerPage,
+    currentPage * parentCommentsPerPage
+  );
 
   if (!isLoggedIn) {
     return <Navigate to="/" replace />;
@@ -73,11 +87,18 @@ function Comments() {
             </Grid>
           </Grid>
         </Paper>
-
         <Box mt={5}>
-          {parentComments.map((comment) => (
+          {displayedParentComments.map((comment) => (
             <Comment key={comment.id} comment={comment} />
           ))}
+        </Box>
+        <Box mt={3} display="flex" justifyContent="center">
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={onPageChange}
+            color="primary"
+          />
         </Box>
       </Container>
     </div>
