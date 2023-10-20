@@ -1,14 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Button from "@mui/material/Button";
+import { Provider } from "react-redux";
+import Comments from "./pages/Comments";
+import store from "./redux/store";
 
 function App() {
   return (
-    <div>
-      <Button variant="contained" color="primary">
-        Click me
-      </Button>
-    </div>
+    <Provider store={store}>
+      <div style={{ maxWidth: "600px", margin: "40px auto" }}>
+        <h1>Nested Comment System</h1>
+        <Comments />
+      </div>
+    </Provider>
   );
 }
 
